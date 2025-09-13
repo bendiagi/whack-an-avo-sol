@@ -240,25 +240,25 @@ function App() {
             
             {/* Hammer displays */}
             {hammerDisplay?.holeNumber === 1 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-1" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-1" />
             )}
             {hammerDisplay?.holeNumber === 2 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-2" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-2" />
             )}
             {hammerDisplay?.holeNumber === 3 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-3" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-3" />
             )}
             {hammerDisplay?.holeNumber === 4 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-4" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-4" />
             )}
             {hammerDisplay?.holeNumber === 5 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-5" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-5" />
             )}
             {hammerDisplay?.holeNumber === 6 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-6" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-6" />
             )}
             {hammerDisplay?.holeNumber === 7 && hammerDisplay.show && (
-              <img src={hammer} alt="Hammer" className="avocado avocado-7" />
+              <img src={hammer} alt="Hammer" className="hammer hammer-7" />
             )}
           </div>
         </div>

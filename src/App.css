@@ -137,6 +137,33 @@
   object-fit: contain;
 }
 
+/* Hammer head styling - 95% larger than avocados (50% + 30%) */
+.hammer {
+  position: absolute;
+  width: 7.59vw; /* 5.84vw * 1.3 = 7.59vw */
+  height: 7.59vw;
+  max-width: 211px; /* 162px * 1.3 = 211px */
+  max-height: 211px;
+  object-fit: contain;
+  animation: hammerHit 0.15s ease-out;
+}
+
+/* Hammer hit animation - starts 15% higher and drops down */
+@keyframes hammerHit {
+  0% {
+    transform: translateY(-15%);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
 /* Position each avocado in the true center of their holes based on SVG analysis */
 .avocado-1 { top: calc(45.0% - 1.945vw); left: calc(20.4% - 1.945vw); }
 .avocado-2 { top: calc(45.1% - 1.945vw); left: calc(40.2% - 1.945vw); }
@@ -145,6 +172,78 @@
 .avocado-5 { top: calc(62.6% - 1.945vw); left: calc(28.9% - 1.945vw); }
 .avocado-6 { top: calc(62.7% - 1.945vw); left: calc(50.7% - 1.945vw); }
 .avocado-7 { top: calc(62.4% - 1.945vw); left: calc(71.6% - 1.945vw); }
+
+/* Position each hammer in the true center of their holes with larger offset */
+.hammer-1 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(43.5% - 3.795vw); 
+  left: calc(20.4% - 3.795vw); 
+}
+.hammer-2 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(43.6% - 3.795vw); 
+  left: calc(40.2% - 3.795vw); 
+}
+.hammer-3 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(43.6% - 3.795vw); 
+  left: calc(60.9% - 3.795vw); 
+}
+.hammer-4 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(43.4% - 3.795vw); 
+  left: calc(79.7% - 3.795vw); 
+}
+.hammer-5 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(61.1% - 3.795vw); 
+  left: calc(28.9% - 3.795vw); 
+}
+.hammer-6 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(61.2% - 3.795vw); 
+  left: calc(50.7% - 3.795vw); 
+}
+.hammer-7 { 
+  position: absolute;
+  width: 7.59vw;
+  height: 7.59vw;
+  max-width: 211px;
+  max-height: 211px;
+  object-fit: contain;
+  top: calc(60.9% - 3.795vw); 
+  left: calc(71.6% - 3.795vw); 
+}
 
 /* Letter display above avocados */
 .letter-display {

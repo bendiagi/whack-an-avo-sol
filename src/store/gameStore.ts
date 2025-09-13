@@ -47,8 +47,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   startTime: null,
   currentTime: 0,
   difficultyLevel: 1,
-  spawnInterval: 2000, // 2 seconds initially
-  avocadoDuration: 1500, // 1.5 seconds initially
+  spawnInterval: 4000, // 4 seconds initially
+  avocadoDuration: 3500, // 3.5 seconds initially
   activeAvocados: [],
 
   // Actions
@@ -59,8 +59,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     startTime: Date.now(),
     currentTime: 0,
     difficultyLevel: 1,
-    spawnInterval: 2000,
-    avocadoDuration: 1500,
+    spawnInterval: 4000,
+    avocadoDuration: 3500,
     activeAvocados: []
   }),
 
@@ -71,8 +71,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     startTime: null,
     currentTime: 0,
     difficultyLevel: 1,
-    spawnInterval: 2000,
-    avocadoDuration: 1500,
+    spawnInterval: 4000,
+    avocadoDuration: 3500,
     activeAvocados: []
   }),
 
@@ -125,8 +125,8 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   updateDifficulty: () => set((state) => {
     const newLevel = state.difficultyLevel + 1
-    const newSpawnInterval = Math.max(800, state.spawnInterval - 100) // Min 0.8s
-    const newDuration = Math.max(800, state.avocadoDuration - 50) // Min 0.8s
+    const newSpawnInterval = Math.max(2000, state.spawnInterval - 100) // Min 2s
+    const newDuration = Math.max(2000, state.avocadoDuration - 50) // Min 2s
     
     return {
       difficultyLevel: newLevel,
