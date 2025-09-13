@@ -1,0 +1,76 @@
+.app {
+  min-height: 100vh;
+  background-image: url('../asset/11.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.main-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.table-container {
+  position: relative;
+  display: inline-block;
+}
+
+.whack-avo-image {
+  width: 70vw;
+  height: auto;
+  max-width: calc(70vh * 1.564); /* Maintain aspect ratio (2831/1810 ≈ 1.564) */
+  max-height: 70vh;
+  display: block;
+}
+
+.avocados-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.avocado {
+  position: absolute;
+  width: 3.6vw; /* 2x larger - proportional to viewport width */
+  height: 3.6vw;
+  max-width: 100px; /* Cap the maximum size - also 2x larger */
+  max-height: 100px;
+  object-fit: contain;
+}
+
+/* Position each avocado in the true center of their holes based on SVG analysis */
+.avocado-1 { top: calc(47.5% - 1.8vw); left: calc(19.9% - 1.8vw); }
+.avocado-2 { top: calc(47.6% - 1.8vw); left: calc(40.2% - 1.8vw); }
+.avocado-3 { top: calc(47.6% - 1.8vw); left: calc(61.4% - 1.8vw); }
+.avocado-4 { top: calc(47.5% - 1.8vw); left: calc(80.6% - 1.8vw); }
+.avocado-5 { top: calc(65.1% - 1.8vw); left: calc(28.8% - 1.8vw); }
+.avocado-6 { top: calc(65.2% - 1.8vw); left: calc(50.7% - 1.8vw); }
+.avocado-7 { top: calc(64.9% - 1.8vw); left: calc(72.4% - 1.8vw); }
+
+
