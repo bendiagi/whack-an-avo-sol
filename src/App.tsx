@@ -60,6 +60,17 @@ function App() {
     }
   }
 
+  const clearIntervalSafe = (id: ReturnType<typeof setInterval> | null) => {
+    if (!id) return
+    // Cast through unknown to satisfy DOM vs Node typings
+    clearInterval(id as unknown as number)
+  }
+
+  const clearTimeoutSafe = (id: ReturnType<typeof setTimeout> | null) => {
+    if (!id) return
+    clearTimeout(id as unknown as number)
+  }
+
   // Timer effect
   useEffect(() => {
     if (isPlaying) {
@@ -67,15 +78,11 @@ function App() {
         updateTimer(Date.now())
       }, 100)
     } else {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current as number)
-      }
+      clearIntervalSafe(timerIntervalRef.current)
     }
 
     return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current as number)
-      }
+      clearIntervalSafe(timerIntervalRef.current)
     }
   }, [isPlaying, updateTimer])
 
@@ -96,9 +103,7 @@ function App() {
       spawnIntervalRef.current = setTimeout(spawnNext, 1000)
 
       return () => {
-        if (spawnIntervalRef.current) {
-          clearTimeout(spawnIntervalRef.current as number)
-        }
+        clearTimeoutSafe(spawnIntervalRef.current)
       }
     }
   }, [isPlaying, isGameOver, spawnAvocado])
@@ -199,7 +204,7 @@ function App() {
   useEffect(() => {
     fetchGlobalHighScore()
     const intervalId: ReturnType<typeof setInterval> = setInterval(fetchGlobalHighScore, 30000)
-    return () => clearInterval(intervalId as number)
+    return () => clearIntervalSafe(intervalId)
   }, [])
 
   return (
