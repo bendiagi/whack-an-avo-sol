@@ -24,8 +24,8 @@ function App() {
 
   const [screenFeedback, setScreenFeedback] = useState<'hit' | 'miss' | null>(null)
   const [hammerDisplay, setHammerDisplay] = useState<{ holeNumber: number; show: boolean } | null>(null)
-  const spawnIntervalRef = useRef<number | null>(null)
-  const timerIntervalRef = useRef<number | null>(null)
+  const spawnIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [globalHighScore, setGlobalHighScore] = useState<number | null>(null)
 
   const HIGHSCORE_URL = (import.meta as any).env?.VITE_HIGHSCORE_URL as string | undefined
@@ -68,13 +68,13 @@ function App() {
       }, 100)
     } else {
       if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current)
+        clearInterval(timerIntervalRef.current as number)
       }
     }
 
     return () => {
       if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current)
+        clearInterval(timerIntervalRef.current as number)
       }
     }
   }, [isPlaying, updateTimer])
@@ -97,7 +97,7 @@ function App() {
 
       return () => {
         if (spawnIntervalRef.current) {
-          clearTimeout(spawnIntervalRef.current)
+          clearTimeout(spawnIntervalRef.current as number)
         }
       }
     }
@@ -198,8 +198,8 @@ function App() {
   // Load global high score on mount and periodically
   useEffect(() => {
     fetchGlobalHighScore()
-    const interval = window.setInterval(fetchGlobalHighScore, 30000)
-    return () => window.clearInterval(interval)
+    const intervalId: ReturnType<typeof setInterval> = setInterval(fetchGlobalHighScore, 30000)
+    return () => clearInterval(intervalId as number)
   }, [])
 
   return (
