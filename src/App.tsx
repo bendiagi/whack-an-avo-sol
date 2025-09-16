@@ -86,7 +86,7 @@ function App() {
     }
   }, [isPlaying, updateTimer])
 
-  // Spawn system
+  // Spawn system - uses store-driven interval (starts 1500ms, minus 100ms every 5 hits, min 500ms)
   useEffect(() => {
     if (isPlaying && !isGameOver) {
       const spawnNext = () => {
@@ -94,13 +94,13 @@ function App() {
         const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26)) // A-Z
         spawnAvocado(holeNumber, letter)
         
-        // Schedule next spawn
-        const nextSpawnDelay = Math.random() * 700 + 800 // 0.8-1.5 seconds
+        // Schedule next spawn using current store interval
+        const nextSpawnDelay = useGameStore.getState().spawnInterval
         spawnIntervalRef.current = setTimeout(spawnNext, nextSpawnDelay)
       }
 
-      // Start spawning after initial delay
-      spawnIntervalRef.current = setTimeout(spawnNext, 1000)
+      // Start spawning after current interval
+      spawnIntervalRef.current = setTimeout(spawnNext, useGameStore.getState().spawnInterval)
 
       return () => {
         clearTimeoutSafe(spawnIntervalRef.current)

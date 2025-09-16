@@ -47,7 +47,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   startTime: null,
   currentTime: 0,
   difficultyLevel: 1,
-  spawnInterval: 4000, // 4 seconds initially
+  spawnInterval: 1500, // Start at 1.5 seconds
   avocadoDuration: 3500, // 3.5 seconds initially
   activeAvocados: [],
 
@@ -59,7 +59,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     startTime: Date.now(),
     currentTime: 0,
     difficultyLevel: 1,
-    spawnInterval: 4000,
+    spawnInterval: 1500,
     avocadoDuration: 3500,
     activeAvocados: []
   }),
@@ -71,7 +71,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     startTime: null,
     currentTime: 0,
     difficultyLevel: 1,
-    spawnInterval: 4000,
+    spawnInterval: 1500,
     avocadoDuration: 3500,
     activeAvocados: []
   }),
@@ -123,17 +123,17 @@ export const useGameStore = create<GameState>((set, get) => ({
     activeAvocados: state.activeAvocados.filter(avo => avo.id !== id)
   })),
 
-  updateDifficulty: () => set((state) => {
-    const newLevel = state.difficultyLevel + 1
-    const newSpawnInterval = Math.max(2000, state.spawnInterval - 100) // Min 2s
-    const newDuration = Math.max(2000, state.avocadoDuration - 50) // Min 2s
-    
-    return {
-      difficultyLevel: newLevel,
-      spawnInterval: newSpawnInterval,
-      avocadoDuration: newDuration
-    }
-  }),
+  updateDifficulty: () => {
+    const currentScore = get().score
+    const reductions = Math.floor(currentScore / 5) // reduce every 5 successful plays
+    const targetInterval = Math.max(500, 1500 - reductions * 100) // floor at 0.5s
+    set((state) => ({
+      difficultyLevel: state.difficultyLevel + 1,
+      spawnInterval: targetInterval,
+      // Keep avocadoDuration unchanged for now
+      avocadoDuration: state.avocadoDuration
+    }))
+  },
 
   checkHit: (key: string) => {
     const state = get()
