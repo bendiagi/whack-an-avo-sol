@@ -353,22 +353,22 @@
   z-index: 2500;
   display: inline-flex;
   align-items: baseline;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 10px;
+  padding: 12px 16px;
   background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  border-radius: 10px;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  border-radius: 12px;
   color: #ffd700;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   font-family: 'Jersey10', Arial, sans-serif;
 }
 
 .global-highscore-badge .badge-label {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 18px;
+  opacity: 1;
 }
 
 .global-highscore-badge .badge-value {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: bold;
 }
