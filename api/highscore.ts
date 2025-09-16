@@ -13,8 +13,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
 
   if (req.method === 'GET') {
-    const value = Number((await redis.get(KEY)) ?? 0)
-    return res.status(200).json({ highScore: value })
+    try {
+      const valueRaw = await redis.get(KEY)
+      const value = Number(valueRaw ?? 0)
+      return res.status(200).json({ highScore: Number.isNaN(value) ? 0 : value })
+    } catch (e: any) {
+      console.error('GET /api/highscore error', e?.message || e)
+      return res.status(500).json({ error: 'Failed to fetch high score' })
+    }
   }
 
   if (req.method === 'POST') {
@@ -25,8 +31,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const next = Math.max(current, incoming)
       if (next !== current) await redis.set(KEY, String(next))
       return res.status(200).json({ highScore: next })
-    } catch (_err) {
-      return res.status(400).json({ error: 'Invalid payload' })
+    } catch (e: any) {
+      const msg = e?.message || String(e)
+      if (msg.toLowerCase().includes('json')) {
+        return res.status(400).json({ error: 'Invalid payload' })
+      }
+      console.error('POST /api/highscore error', msg)
+      return res.status(500).json({ error: 'Failed to update high score' })
     }
   }
 
