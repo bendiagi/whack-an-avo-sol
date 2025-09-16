@@ -1,5 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
+
+const redis = Redis.fromEnv()
+const KEY = 'global_highscore'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -7,10 +10,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   if (req.method === 'OPTIONS') return res.status(200).end()
 
-  const key = 'global_highscore'
-
   if (req.method === 'GET') {
-    const value = Number((await kv.get(key)) ?? 0)
+    const value = Number((await redis.get(KEY)) ?? 0)
     return res.status(200).json({ highScore: value })
   }
 
@@ -18,9 +19,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
       const incoming = Number(body?.score) || 0
-      const current = Number((await kv.get(key)) ?? 0)
+      const current = Number((await redis.get(KEY)) ?? 0)
       const next = Math.max(current, incoming)
-      if (next !== current) await kv.set(key, String(next))
+      if (next !== current) await redis.set(KEY, String(next))
       return res.status(200).json({ highScore: next })
     } catch (_err) {
       return res.status(400).json({ error: 'Invalid payload' })
