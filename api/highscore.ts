@@ -3,8 +3,8 @@ import { Redis } from '@upstash/redis'
 const KEY = 'global_highscore'
 
 function getRedis() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  const url = process.env.CUSTOM_KV_REST_API_URL || process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.CUSTOM_KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
   if (!url || !token) return null
   return new Redis({ url, token })
 }
@@ -28,15 +28,22 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const url = new URL(req.url)
-    if (url.searchParams.get('debug') === '1') {
+    const debug = url.searchParams.get('debug')
+    if (debug === '1' || debug === '2') {
+      const usedUrl = process.env.CUSTOM_KV_REST_API_URL || process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || ''
+      const usedToken = process.env.CUSTOM_KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || ''
+      const mask = (v: string) => (v ? `${v.slice(0, 10)}...${v.slice(-6)}` : '')
       return json({
         ok: true,
         envs: {
+          CUSTOM_KV_REST_API_URL: Boolean(process.env.CUSTOM_KV_REST_API_URL),
+          CUSTOM_KV_REST_API_TOKEN: Boolean(process.env.CUSTOM_KV_REST_API_TOKEN),
           KV_REST_API_URL: Boolean(process.env.KV_REST_API_URL),
           KV_REST_API_TOKEN: Boolean(process.env.KV_REST_API_TOKEN),
           UPSTASH_REDIS_REST_URL: Boolean(process.env.UPSTASH_REDIS_REST_URL),
           UPSTASH_REDIS_REST_TOKEN: Boolean(process.env.UPSTASH_REDIS_REST_TOKEN)
-        }
+        },
+        used: debug === '2' ? { url: mask(usedUrl), token: mask(usedToken) } : undefined
       })
     }
 
