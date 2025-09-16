@@ -345,3 +345,30 @@
 }
 
 
+/* Global high score badge */
+.global-highscore-badge {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 2500;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 10px;
+  color: #ffd700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-family: 'Jersey10', Arial, sans-serif;
+}
+
+.global-highscore-badge .badge-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.global-highscore-badge .badge-value {
+  font-size: 22px;
+  font-weight: bold;
+}

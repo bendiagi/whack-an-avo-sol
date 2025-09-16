@@ -3,6 +3,9 @@ import './App.css'
 import whackAvoBg from '../asset/whack-avo-b1-01.svg'
 import avo from '../asset/avo.png'
 import hammer from '../asset/whack-hammer-3.svg'
+import startGameSound from '../asset/start-game-sound.wav'
+import hammerHitSound from '../asset/hammer-hit-sound-2.wav'
+import gameOverSound from '../asset/game-over.wav'
 import { useGameStore } from './store/gameStore'
 
 function App() {
@@ -23,6 +26,39 @@ function App() {
   const [hammerDisplay, setHammerDisplay] = useState<{ holeNumber: number; show: boolean } | null>(null)
   const spawnIntervalRef = useRef<number | null>(null)
   const timerIntervalRef = useRef<number | null>(null)
+  const [globalHighScore, setGlobalHighScore] = useState<number | null>(null)
+
+  const HIGHSCORE_URL = (import.meta as any).env?.VITE_HIGHSCORE_URL as string | undefined
+
+  const fetchGlobalHighScore = async () => {
+    try {
+      if (!HIGHSCORE_URL) return
+      const res = await fetch(HIGHSCORE_URL, { method: 'GET' })
+      if (!res.ok) return
+      const data = await res.json()
+      const value = typeof data?.highScore === 'number' ? data.highScore : Number(data?.highScore)
+      if (!Number.isNaN(value)) {
+        setGlobalHighScore(value)
+      }
+    } catch (err) {
+      // noop
+    }
+  }
+
+  const maybeSubmitNewScore = async (finalScore: number) => {
+    try {
+      if (!HIGHSCORE_URL) return
+      await fetch(HIGHSCORE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: finalScore })
+      })
+      // Refresh after submit
+      fetchGlobalHighScore()
+    } catch (err) {
+      // noop
+    }
+  }
 
   // Timer effect
   useEffect(() => {
@@ -67,6 +103,32 @@ function App() {
     }
   }, [isPlaying, isGameOver, spawnAvocado])
 
+  // Handle start game with sound
+  const handleStartGame = () => {
+    // Play start game sound
+    const audio = new Audio(startGameSound)
+    audio.play().catch(error => {
+      console.log('Could not play start game sound:', error)
+    })
+    
+    // Start the game
+    startGame()
+  }
+
+  // Play game over sound when game ends
+  useEffect(() => {
+    if (isGameOver) {
+      const audio = new Audio(gameOverSound)
+      audio.play().catch(error => {
+        console.log('Could not play game over sound:', error)
+      })
+      // Submit score to global board
+      if (typeof score === 'number') {
+        maybeSubmitNewScore(score)
+      }
+    }
+  }, [isGameOver])
+
   // Keyboard input
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -82,6 +144,12 @@ function App() {
         const isHit = checkHit(key)
         
         if (isHit && matchingAvocado) {
+          // Play hammer hit sound
+          const audio = new Audio(hammerHitSound)
+          audio.play().catch(error => {
+            console.log('Could not play hammer hit sound:', error)
+          })
+          
           // Show hammer in the correct hole
           setHammerDisplay({ holeNumber: matchingAvocado.holeNumber, show: true })
           setScreenFeedback('hit')
@@ -127,14 +195,26 @@ function App() {
     return formatTime(elapsed)
   }
 
+  // Load global high score on mount and periodically
+  useEffect(() => {
+    fetchGlobalHighScore()
+    const interval = window.setInterval(fetchGlobalHighScore, 30000)
+    return () => window.clearInterval(interval)
+  }, [])
+
   return (
     <div className="app">
+      {/* Global High Score Badge */}
+      <div className="global-highscore-badge">
+        <span className="badge-label">World Best</span>
+        <span className="badge-value">{globalHighScore ?? '—'}</span>
+      </div>
       {/* Game Controls */}
       <div className="game-controls">
         <div className="control-buttons">
           <button 
             className="game-button" 
-            onClick={startGame}
+            onClick={handleStartGame}
             disabled={isPlaying}
           >
             {isPlaying ? 'Playing...' : 'Start Game'}
