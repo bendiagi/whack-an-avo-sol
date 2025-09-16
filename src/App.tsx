@@ -112,8 +112,8 @@ function App() {
   const handleStartGame = () => {
     // Play start game sound
     const audio = new Audio(startGameSound)
-    audio.play().catch(error => {
-      console.log('Could not play start game sound:', error)
+    audio.play().catch(() => {
+      // Audio play failed silently
     })
     
     // Start the game
@@ -124,8 +124,8 @@ function App() {
   useEffect(() => {
     if (isGameOver) {
       const audio = new Audio(gameOverSound)
-      audio.play().catch(error => {
-        console.log('Could not play game over sound:', error)
+      audio.play().catch(() => {
+        // Audio play failed silently
       })
       // Submit score to global board
       if (typeof score === 'number') {
@@ -151,8 +151,8 @@ function App() {
         if (isHit && matchingAvocado) {
           // Play hammer hit sound
           const audio = new Audio(hammerHitSound)
-          audio.play().catch(error => {
-            console.log('Could not play hammer hit sound:', error)
+          audio.play().catch(() => {
+            // Audio play failed silently
           })
           
           // Show hammer in the correct hole
